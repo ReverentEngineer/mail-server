@@ -1,0 +1,6 @@
+FROM alpine:latest
+EXPOSE 25/tcp 587/tcp
+RUN apk add postfix
+ADD master.cf /etc/postfix/master.cf
+ENTRYPOINT ["/usr/sbin/postfix"]
+CMD ["start-fg"]

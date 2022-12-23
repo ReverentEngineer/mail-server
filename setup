@@ -1,0 +1,10 @@
+#!/bin/bash
+DOCKER=${DOCKER:=podman}
+set -eo pipefail
+PREFIX=$(basename $(pwd))
+OPENLDAP_IMAGE=${PREFIX}_openldap:latest
+$DOCKER build -t $OPENLDAP_IMAGE $PWD/openldap 
+$DOCKER run -v ${PREFIX}_ldap-config:/etc/openldap/slapd.d \
+	-v ${PREFIX}_ldap-data:/var/lib/openldap/openldap-data \
+	--secret mail-reader-ldap-password,mode=0400 \
+       	-it $OPENLDAP_IMAGE setup

@@ -1,0 +1,4 @@
+hosts = openldap
+base = cn=mail
+auth_bind = yes
+auth_bind_userdn = uid=%s,cn=people,cn=mail

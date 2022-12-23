@@ -1,0 +1,8 @@
+FROM alpine
+ADD entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN apk add openldap openldap-back-mdb openssl &&\
+	install -m 755 -o ldap -g ldap -d /var/lib/openldap/run &&\
+	install -m 755 -o ldap -g ldap -d /etc/openldap/slapd.d
+VOLUME /etc/openldap/slapd.d /var/lib/openldap/openldap-data
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["run"]

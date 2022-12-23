@@ -1,0 +1,8 @@
+FROM alpine:latest
+EXPOSE 24/tcp 143/tcp 993/tcp 12345/tcp
+RUN apk add dovecot dovecot-lmtpd dovecot-submissiond dovecot-ldap &&\
+  adduser -u 1000 -D -h /srv/mail vmail &&\
+  install -d -o vmail -g vmail -m 600  /srv/vmail
+ADD entrypoint.sh /usr/local/sbin/entrypoint.sh
+ADD etc /etc/dovecot
+ENTRYPOINT ["/usr/local/sbin/entrypoint.sh"]

@@ -1,0 +1,28 @@
+version: '3'
+services:
+  dovecot:
+    build: dovecot
+    ports:
+      - "11433:143"
+      - "1993:993"
+    depends_on:
+      - openldap
+    secrets:
+      - mail-reader-ldap-password
+  postfix:
+    build: postfix
+    ports:
+      - "1025:25"
+      - "1587:587"
+    depends_on:
+      - dovecot
+    secrets:
+      - mail-reader-ldap-password
+  openldap:
+    build: openldap
+    volumes:
+      - ldap-data:/var/lib/openldap/openldap-data
+      - ldap-config:/etc/openldap/slapd.d
+secrets:
+  mail-reader-ldap-password:
+    external: true
